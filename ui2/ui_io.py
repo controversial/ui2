@@ -51,3 +51,4 @@ def embed_custom_attributes(inp, data):
 def get_custom_attributes(pyui):
     pyui, dataformat = _json_get(pyui)
     return pyui[0]["attributes"]["ui2"]
+

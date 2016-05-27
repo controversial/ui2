@@ -1,6 +1,5 @@
 """
-Easily draw different shapes and polygons using Pythonista's UI module. Also
-includes methods for storing these shapes as JSON.
+Easily draw different shapes and polygons using Pythonista's UI module.
 """
 
 from math import sin, cos, pi
@@ -53,3 +52,68 @@ def draw_regular_polygon(n, center, radius, rotation=0, color="#000"):
     points = [(center[0] + p[0], center[1] + p[1]) for p in points]
     # Draw the polygon
     draw_polygon(points, color)
+    
+    return points
+
+
+def draw_shape_from_dict():
+    """ Draw a shape from a dict, as it is stored in .pyui2 files """
+    pass
+
+
+# VIEW CLASSES
+
+class Polygon(ui.View):
+    """ A Polygon that you can add to a ui.View as a subview. 
+    Scaling is *not* currently implemented. Eventually, adjusting the width and
+    height will automatically adjust the position of the points """
+    def __init__(self, points, color="#000"):
+        self.points = points
+        self.color = color
+        super(Polygon, self).__init__(self)
+
+    def draw(self):
+        draw_polygon(self.points, self.color)
+
+
+class RegularPolygon(ui.View):
+    def __init__(self, n, rotation=0, color="#000"):
+        self.num_sides = n
+        self.rotation = rotation
+        self.color = color
+        super(RegularPolygon, self).__init__(self)
+    
+    def draw(self):
+        draw_regular_polygon(self.num_sides, (self.width / 2, self.height / 2),
+                             min(self.width, self.height) / 2, self.rotation,
+                             self.color)
+
+if __name__ == "__main__":
+    # BASIC USAGE
+    v = ui.View()
+    p = RegularPolygon(5)
+    v.add_subview(p)
+    
+    # Miscellaneous settings
+    v.background_color = "#fff"
+    v.width, v.height = ui.get_screen_size()
+    
+    v.present()
+
+    # FANCY ANIMATIONS
+    # Note that this isn't really necessary, basic usage is what is above. All
+    # this code is just to animate changing position and size
+    def move(): p.x, p.y = v.width - p.width, v.height - p.height
+    ui.animate(move, 1)
+
+    def moveBack(): p.x, p.y = 0, 0
+    ui.delay(lambda: ui.animate(moveBack, 1), 1)
+    
+    def scale():
+        size = min(v.width, v.height)
+        p.width, p.height = size, size
+    ui.delay(lambda: ui.animate(scale, 1), 2)
+    
+    def scaleBack(): p.width, p.height = 100, 100
+    ui.delay(lambda: ui.animate(scaleBack, 1), 4)
+
