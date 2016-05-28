@@ -6,7 +6,6 @@ from math import sin, cos, pi
 
 import ui
 
-
 # HELPER METHODS
 
 def _polar2cart(radius, theta):
@@ -17,10 +16,10 @@ def _polar2cart(radius, theta):
 
 # MAIN METHODS
 
-def draw_polygon(points, color="#000"):
-    """ Draw an enclosed polygon given a list of points that form the shape """
+def draw_polygon(points):
+    """ Draw an enclosed polygon given a list of points that form the shape.
+    Obeys the ui.GState for settings like color, shadow, etc. """
 
-    ui.set_color(color)
     p = ui.Path()
     # Move to first point
     p.move_to(*points[0])
@@ -29,11 +28,11 @@ def draw_polygon(points, color="#000"):
         p.line_to(*point)
     # Go back to start to close the shape
     p.close()
-    # Fill with color
+    # Fill
     p.fill()
 
 
-def draw_regular_polygon(n, center, radius, rotation=0, color="#000"):
+def draw_regular_polygon(n, center, radius, rotation=0):
     """ Draw a regular polygon given the number of sides, the center, the
     radius. The polygon will be drawn so that the base is flat horizontal,
     unless `rotation` is specified, in which case the polygon will be rotated
@@ -51,7 +50,7 @@ def draw_regular_polygon(n, center, radius, rotation=0, color="#000"):
     points = [_polar2cart(radius, theta) for theta in degree_intervals]
     points = [(center[0] + p[0], center[1] + p[1]) for p in points]
     # Draw the polygon
-    draw_polygon(points, color)
+    draw_polygon(points)
     
     return points
 
@@ -67,34 +66,43 @@ class Polygon(ui.View):
     """ A Polygon that you can add to a ui.View as a subview. 
     Scaling is *not* currently implemented. Eventually, adjusting the width and
     height will automatically adjust the position of the points """
-    def __init__(self, points, color="#000"):
+    def __init__(self, points, color="#000", shadow=("#000", 0, 0, 0)):
         self.points = points
         self.color = color
+        self.shadow = shadow
+        
         super(Polygon, self).__init__(self)
 
     def draw(self):
-        draw_polygon(self.points, self.color)
+        ui.set_shadow(*self.shadow)
+        ui.set_color(self.color)
+        
+        draw_polygon(self.points)
 
 
 class RegularPolygon(ui.View):
-    def __init__(self, n, rotation=0, color="#000"):
+    def __init__(self, n, rotation=0, color="#000", shadow=("#000", 0, 0, 0)):
         self.num_sides = n
         self.rotation = rotation
         self.color = color
+        self.shadow = shadow
+
         super(RegularPolygon, self).__init__(self)
     
     def draw(self):
+        ui.set_shadow(*self.shadow)
+        ui.set_color(self.color)
+
         draw_regular_polygon(self.num_sides, (self.width / 2, self.height / 2),
-                             min(self.width, self.height) / 2, self.rotation,
-                             self.color)
+                             min(self.width, self.height) / 3, self.rotation)
 
 if __name__ == "__main__":
     # BASIC USAGE
     v = ui.View()
-    p = RegularPolygon(5)
+    p = RegularPolygon(5, color="#333", shadow=("#0cf", 10, 10, 5))
     v.add_subview(p)
     
-    # Miscellaneous settings
+    # Miscellaneous
     v.background_color = "#fff"
     v.width, v.height = ui.get_screen_size()
     
@@ -112,6 +120,7 @@ if __name__ == "__main__":
     def scale():
         size = min(v.width, v.height)
         p.width, p.height = size, size
+
     ui.delay(lambda: ui.animate(scale, 1), 2)
     
     def scaleBack(): p.width, p.height = 100, 100
