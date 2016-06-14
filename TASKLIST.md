@@ -6,3 +6,7 @@ A list of things I'd like to add, or things that are planned
   - Perhaps the existing polygon classes should inherit from this?
 - [ ] Progress bar
   - Should have styling options
+- [ ] NewPath class
+  - [x] Basics
+  - [ ] Scaling and stretching the whole path
+- [ ] Test suite
