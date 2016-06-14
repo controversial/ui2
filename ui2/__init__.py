@@ -7,4 +7,3 @@ from ui import *
 # Load subpackages
 from ui2 import shapes, ui_io
 from ui2.NewPath import Path
-

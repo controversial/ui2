@@ -1,6 +1,7 @@
 import objc_util
 import ui
 
+
 # We can't inherit :(
 class Path():
     """ A magical wrapper around ui.Path that allows you to track where the
@@ -15,12 +16,12 @@ class Path():
         # Keeps track of the current position internally. Only updated manually
         # and is therefore used to track old values
         self._position = (0, 0)
-    
+
         # Copy docstring
         self.__doc__ == ui.Path.__doc__
 
     # Wrapper methods
-    
+
     def move_to(self, x, y):
         # Not stored in components, since it isn't part of the path. Can be
         # easily inferred from gaps between one ending position and the next
@@ -66,10 +67,10 @@ class Path():
              self.position,               # Ending position
              "add_quad_curve"]            # Method used
         )
-    
+
     def append_path(other_path):
         raise NotImplementedError()
-    
+
     def close(self):
         self.p.close()
         self.components.append(
@@ -78,7 +79,7 @@ class Path():
              self.position,   # Ending position
              "close"]         # Method used
         )
-         
+
     # Extended API (besides what's in __init__)
 
     @property
@@ -90,7 +91,7 @@ class Path():
     @property
     def points(self):
         return [c[0] for c in self.components]
-    
+
     @property
     def is_closed(self):
         return self.components[-1][2] == self.components[0][0]
@@ -101,7 +102,7 @@ class Path():
         return getattr(self.p, key)
 
 if __name__ == "__main__":
-    with ui.ImageContext(100, 100) as ctx:        
+    with ui.ImageContext(100, 100) as ctx:
         a = Path()
         # Tests
         a.move_to(10, 10)

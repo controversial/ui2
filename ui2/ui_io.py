@@ -7,11 +7,11 @@ import json
 def _json_get(inp):
     """ Get a Python object (list or dict) regardless of whether data is passed
     as a JSON string, a file path, or is already a python object.
-    
+
     Returns the parsed data, as well as "native" if the data was already a
     Python object, "str" if the data was passed as a JSON string, or the path
     if the data passed was a file path """
-    
+
     if not (isinstance(inp, dict) or isinstance(inp, list)):  # Python object
         try:                                                    # JSON string
             data = json.loads(inp)
@@ -24,7 +24,7 @@ def _json_get(inp):
                 data = json.load(f)
     else:
         dataformat = "native"
-    
+
     return data, dataformat
 
 
@@ -51,4 +51,3 @@ def embed_custom_attributes(inp, data):
 def get_custom_attributes(pyui):
     pyui, dataformat = _json_get(pyui)
     return pyui[0]["attributes"]["ui2"]
-
