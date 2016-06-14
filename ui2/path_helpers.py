@@ -35,3 +35,15 @@ def scale_path(path, scale):
     objcpath = objc_util.ObjCInstance(newpath)
     objcpath.applyTransform_(transform)
     return newpath
+
+
+if __name__ == "__main__":
+    a = ui.Path()
+    a.line_to(100, 0)
+    a.line_to(100, 100)
+    a.close()
+
+    b = scale_path(a, 0.25)
+
+    get_path_image(a).show()  # Note that the original is not mutated
+    get_path_image(b).show()
