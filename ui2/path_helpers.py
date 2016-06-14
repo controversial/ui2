@@ -1,4 +1,5 @@
 import ui
+import objc_util
 
 
 def get_path_image(path):
@@ -19,3 +20,18 @@ def copy_path(path):
     new.line_width = path.line_width
 
     return new
+
+
+def scale_path(path, scale):
+    """ Stretch or scale a path. Pass either a scale or a tuple of scales """
+    if not hasattr(scale, "__iter__"):
+        scale = (scale, scale)
+    sx, sy = scale
+
+    newpath = copy_path(path)
+    # Construct an affine transformation matrix
+    transform = objc_util.CGAffineTransform(sx, 0, 0, sy, 0, 0)
+    # Apply it to the path
+    objcpath = objc_util.ObjCInstance(newpath)
+    objcpath.applyTransform_(transform)
+    return newpath
