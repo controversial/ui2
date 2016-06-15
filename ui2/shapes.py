@@ -33,7 +33,7 @@ def get_polygon_path(points):
 
 
 
-def get_regular_polygon_points(n, center, radius, rotation=0):
+def get_regular_polygon_points(n, center=(20, 20), radius=20, rotation=0):
     """ Get the points to form a regular polygon given the number of sides, the
     center, the radius. The polygon will be drawn so that the base is flat
     horizontal, unless `rotation` is specified, in which case the polygon will
