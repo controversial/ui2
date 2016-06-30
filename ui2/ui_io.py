@@ -8,6 +8,7 @@ import uuid
 def _json_get(inp):
     """ Get a Python object (list or dict) regardless of whether data is passed
     as a JSON string, a file path, or is already a python object.
+
     Returns the parsed data, as well as "native" if the data was already a
     Python object, "str" if the data was passed as a JSON string, or the path
     if the data passed was a file path """
@@ -28,7 +29,7 @@ def _json_get(inp):
     return data, dataformat
 
 
-def embed_custom_attributes(inp, data):
+def _embed_custom_attributes(inp, data):
     """ ui2 stores metadata by embedding a `ui2` key in the `attributes` dict
     of the base view. This function automates the storing of said "custom
     attributes." Pass a JSON string, a dict, or the path to a pyui file """
@@ -48,12 +49,12 @@ def embed_custom_attributes(inp, data):
             json.dump(pyui, f, indent=2)
 
 
-def get_custom_attributes(pyui):
+def _get_custom_attributes(pyui):
     pyui, dataformat = _json_get(pyui)
     return pyui[0]["attributes"]["ui2"]
 
 
-def view_to_dict(view):
+def _view_to_dict(view):
     """ The magical solution to store ui.View instances as pyui files """
     # The base attributes shared across all views
     out = {
