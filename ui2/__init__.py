@@ -5,5 +5,7 @@
 from ui import *
 
 # Load subpackages
-from ui2 import shapes, ui_io
+from ui2.shapes import *
+from ui2.ui_io import *
+import ui2.path_helpers as pathutils
 from ui2.NewPath import Path
