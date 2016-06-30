@@ -88,7 +88,6 @@ class PathView(ui.View):
         new_path = ui2.path_helpers.scale_path(self._path, (scale_x, scale_y))
         new_path.fill()
 
-
 if __name__ == "__main__":
     # SETUP
     p = get_regular_polygon_path(6, center=(50, 50), radius=50)
@@ -96,22 +95,17 @@ if __name__ == "__main__":
     pv.x = 150
     pv.y = 150
     ui2.path_helpers.get_path_image(p).show()
-
     # ANIMATION FUNCTIONS
     def scaleWidth():
         pv.width = 200
-
     def scaleHeight():
         pv.height = 200
-
     def scaleBoth():
         pv.width = 300
         pv.height = 300
-
     def scaleBack():
         pv.x, pv.y = 0, 0
         pv.width, pv.height = 50, 50
-
     # BASIC USAGE
     v = ui.View()
     v.width, v.height = 500, 500

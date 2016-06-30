@@ -39,11 +39,11 @@ def scale_path(path, scale):
 
 if __name__ == "__main__":
     a = ui.Path()
-    a.line_to(100, 0)
-    a.line_to(100, 100)
+    a.line_to(25, 0)
+    a.line_to(25, 25)
     a.close()
 
-    b = scale_path(a, 0.25)
+    b = scale_path(a, 2)
 
     get_path_image(a).show()  # Note that the original is not mutated
     get_path_image(b).show()
