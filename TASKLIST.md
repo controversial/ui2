@@ -2,11 +2,12 @@
 A list of things I'd like to add, or things that are planned
 
 # `ui.View` classes
-- [ ] `PathView` class for easily displaying shapes in a UI
+- [x] `PathView` class for easily displaying shapes in a UI
   - Perhaps the existing polygon classes should inherit from this?
 - [ ] Progress bar
   - Should have styling options
-- [ ] NewPath class
+- [x] NewPath class
   - [x] Basics
-  - [ ] Scaling and stretching the whole path
+  - [x] Scaling and stretching the whole path - implemented via 
+- [ ] Create `.pyui` files from in-memory `ui.View` objects
 - [ ] Test suite
