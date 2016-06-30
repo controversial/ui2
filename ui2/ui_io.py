@@ -66,14 +66,14 @@ def _view_to_dict(view):
                                                      int(view.frame.width),
                                                      int(view.frame.height)),
         "class": view.__class__.__name__,
-        "nodes": [view_to_dict(sv) for sv in view.subviews],
+        "nodes": [_view_to_dict(sv) for sv in view.subviews],
         "attributes": {}
     }
 
     # Add the strange attributes. Some of these are duplicate properties, and
     # some are never used at all as far as I can tell (like 'uuid') I'm
     # including them to be safe, though.
-    out["attributes"]["uuid"] = uuid.uuid4()
+    out["attributes"]["uuid"] = str(uuid.uuid4())
     out["attributes"]["class"] = view.__class__.__name__
     out["attributes"]["frame"] = out["frame"]
 
@@ -95,27 +95,42 @@ def _view_to_dict(view):
     # tuple for convenience.
     attrs = [a if isinstance(a, tuple) else (a,) * 2 for a in attrs]
 
-    # This is mostly robust, though there are a few edge cases
+    # Edge cases
+    if hasattr(view, "background_color"):
+        out["attributes"]["background_color"] = "RGBA({},{},{},{})".format(
+            *view.background_color
+        )
+
+    # This is mostly robust, though there are a few uncovered edge cases
     for attr_name in attrs:
         if hasattr(view, attr_name[0]):
             attr = getattr(view, attr_name[0])
             if not isinstance(attr, (int, float, bool, str, type(None))):
                 attr = str(attr)
-            if attr_name not in out["attributes"] and attr not in (None, ""):
+            if (attr_name[0] not in out["attributes"] and
+                    attr not in (None, "")):
                 out["attributes"][attr_name[1]] = attr
 
     return out
 
 
 def dump_view(view, path):
-    """ The reverse of `ui.load_view()`"""
+    """ The reverse of `ui.load_view()` """
     with open(path, "w") as f:
-        json.dump(view_to_dict(view), f)
+        json.dump(_view_to_dict(view), f)
 
 
 if __name__ == "__main__":
     import ui
-    a = ui.Button()
-    a.title = "Hey, it's a thing!"
-    b = ui._view_from_dict(view_to_dict(a), globals(), locals())
-    assert b.title == "Hey, it's a thing!"
+    a = ui.View()
+    a.background_color = "#fff"
+
+    button = ui.Button()
+    button.title = "Hey, it's a thing!"
+
+    a.add_subview(button)
+
+    b = ui._view_from_dict(_view_to_dict(a), globals(), locals())
+
+    assert b.subviews[0].title == "Hey, it's a thing!"
+    print("Successfully converted ui.View to a dict and back!")
