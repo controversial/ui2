@@ -26,6 +26,9 @@ class ProgressPathView(ui.View):
 
         self.stroke_width = width
         self.progress = 0  # Progress starts at 0
+
+
+    # Attributes
     
     @property
     def progress(self):
@@ -34,6 +37,7 @@ class ProgressPathView(ui.View):
     @progress.setter
     def progress(self, value):
         self._layer.setStrokeEnd_(value)
+        self._layer.setNeedsDisplay()
 
     @property
     def stroke_width(self):
@@ -53,7 +57,17 @@ class ProgressPathView(ui.View):
         self._layer.setStrokeColor_(_get_CGColor(color))
 
 
+    # Extras
+    
+    @property
+    def complete(self):
+        return self.progress == 1
+
+
 if __name__ == "__main__":
+    import random
+    import time
+
     p = ui.Path()
     p.move_to(10, 10)
     p.line_to(50, 10)
@@ -65,11 +79,14 @@ if __name__ == "__main__":
     b.add_subview(a)
 
     b.present("sheet")
-    
-    a.progress = 0.1
+
     def advance():
-        a.progress = 0.7
-    ui.delay(advance, 0.75)
-    def advance2():
-        a.progress = 1
-    ui.delay(advance2, 1.5)
+        pg = a.progress + random.random() / 10
+        if pg < 1:
+            a.progress = pg
+            ui.delay(advance, random.random() / 3)
+        else:
+            a.progress = 1
+        
+
+    advance()
