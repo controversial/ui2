@@ -10,4 +10,5 @@ A list of things I'd like to add, or things that are planned
   - [x] Basics
   - [x] Scaling and stretching the whole path - implemented via `PathView`
 - [x] Create `.pyui` files from in-memory `ui.View` objects
+- [ ] `ui2.animate` with support for custom easing functions
 - [ ] Test suite
