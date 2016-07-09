@@ -8,7 +8,6 @@ A list of things I'd like to add, or things that are planned
   - Should have styling options
 - [x] NewPath class
   - [x] Basics
-  - [x] Scaling and stretching the whole path - implemented via `PathView`
-- [x] Create `.pyui` files from in-memory `ui.View` objects
-- [ ] `ui2.animate` with support for custom easing functions
+  - [x] Scaling and stretching the whole path - implemented via 
+- [ ] Create `.pyui` files from in-memory `ui.View` objects
 - [ ] Test suite

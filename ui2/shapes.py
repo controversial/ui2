@@ -5,7 +5,6 @@ Easily draw different shapes and polygons using Pythonista's UI module.
 from math import sin, cos, pi
 
 import ui
-import ui2
 
 
 # HELPER METHODS
@@ -61,58 +60,3 @@ def get_regular_polygon_path(*args, **kwargs):
 def draw_shape_from_dict():
     """ Draw a shape from a dict, as it is stored in .pyui2 files """
     raise NotImplementedError()
-
-
-# VIEW CLASSES
-
-class PathView(ui.View):
-    """ A class for displaying a ui.Path inside a ui.View, which automatically
-    scales and moves the path when you change the frame """
-    def __init__(self, path, color="black", shadow=("black", 0, 0, 0)):
-        # Store arguments
-        self._path = path
-        self._color = color
-        self._shadow = shadow
-        # Store other data (data that requires processing)
-        self._pathsize = path.bounds.max_x, path.bounds.max_y
-        self.width, self.height = self._pathsize
-
-    def draw(self):
-        # Set drawing attributes
-        ui.set_color(self._color)
-        ui.set_shadow(*self._shadow)
-        # Calculations
-        scale_x = self.width / self._pathsize[0]
-        scale_y = self.height / self._pathsize[0]
-        # Scale the path
-        new_path = ui2.path_helpers.scale_path(self._path, (scale_x, scale_y))
-        new_path.fill()
-
-if __name__ == "__main__":
-    # SETUP
-    p = get_regular_polygon_path(6, center=(50, 50), radius=50)
-    pv = PathView(p)
-    pv.x = 150
-    pv.y = 150
-    ui2.path_helpers.get_path_image(p).show()
-    # ANIMATION FUNCTIONS
-    def scaleWidth():
-        pv.width = 200
-    def scaleHeight():
-        pv.height = 200
-    def scaleBoth():
-        pv.width = 300
-        pv.height = 300
-    def scaleBack():
-        pv.x, pv.y = 0, 0
-        pv.width, pv.height = 50, 50
-    # BASIC USAGE
-    v = ui.View()
-    v.width, v.height = 500, 500
-    v.add_subview(pv)
-    v.present("sheet")
-    # PERFORM THE ANIMATIONS
-    ui.animate(scaleWidth, 1)
-    ui.delay(lambda: ui.animate(scaleHeight, 1), 1)
-    ui.delay(lambda: ui.animate(scaleBoth, 1), 2)
-    ui.delay(lambda: ui.animate(scaleBack, 1), 3)
