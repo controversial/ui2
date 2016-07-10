@@ -7,7 +7,7 @@ def animate(animation, duration=0.25, delay=0.0, completion=None):
         def c(cmd, success):
             completion(success)
             release_global(ObjCInstance(cmd))
-        oncomplete = ObjCBlock(c, argtypes=[c_void_p, c_void_p])
+        oncomplete = ObjCBlock(c, argtypes=[c_void_p, c_bool])
         retain_global(oncomplete)
     else:
         oncomplete = None
