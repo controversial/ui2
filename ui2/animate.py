@@ -18,7 +18,6 @@ class Animation(object):
         if self.completion is not None:
             def c(cmd, success):
                 self.completion(success)
-                print("Ran completion object")
                 release_global(ObjCInstance(cmd))
             oncomplete = ObjCBlock(c, argtypes=[c_void_p, c_bool])
             retain_global(oncomplete)
