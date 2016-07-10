@@ -2,8 +2,6 @@ from objc_util import *
 import time
 
 
-CATransaction = ObjCClass("CATransaction")
-
 def animate(animation, duration=0.25, delay=0.0, completion=None):
     """A drop-in replacement for ui.animate which supports easings."""
     if completion is not None:
