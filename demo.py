@@ -72,6 +72,29 @@ def demo_ProgressPathView():
     advance()
 
 
+def demo_Animation():
+    v = ui.View()
+    v.width = v.height = 500
+    v.background_color = "red"
+
+    b = ui.View()
+    b.width = b.height = b.x = 100
+    b.y = 200
+    b.background_color = "white"
+
+    v.add_subview(b)
+
+    def a():
+        b.x = 300
+
+    def completion(success):
+        print("Done!")
+
+    v.present("sheet", hide_title_bar=True)
+
+    ui2.animate(a, 0.25, 0.25, completion)
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 
@@ -92,4 +115,3 @@ if __name__ == "__main__":
     # Run the demo
     if demo is not None:
         globals()[prefix + demo]()
-
