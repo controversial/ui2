@@ -1,5 +1,4 @@
 from objc_util import *
-import time
 
 
 def animate(animation, duration=0.25, delay=0.0, completion=None):
