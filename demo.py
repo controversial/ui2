@@ -96,7 +96,6 @@ def demo_Animation():
 
 
 def demo_ChainedAnimation():
-    global v
     v = ui.View()
     v.width = v.height = 500
     v.background_color = "red"
@@ -118,13 +117,12 @@ def demo_ChainedAnimation():
     def completion(success):
         print("Done!")
 
-    global a
-    b_anim = ui2.Animation(animation_b, 1)
-    a_anim = ui2.Animation(animation_a, 1, completion=completion)
+    a_anim = ui2.Animation(animation_a, 1, completion=completion,
+                           easing=ui2.ANIMATE_EASE_IN)
+    b_anim = ui2.Animation(animation_b, 1, easing=ui2.ANIMATE_EASE_OUT)
 
     v.present("sheet", hide_title_bar=True)
 
-    global chain
     chain = ui2.ChainedAnimation(a_anim, b_anim)
     chain.play()
 
