@@ -43,7 +43,6 @@ def demo_Polygon():
 def demo_ProgressPathView():
     import math
     import random
-    import time
 
     p = ui.Path()
     p.move_to(20, 20)
