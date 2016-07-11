@@ -4,7 +4,7 @@ from objc_util import *
 # Basic animation class
 
 class Animation(object):
-    """Represents an animation to one or more properties of an object"""
+    """Represents an animation to one or more properties of an object."""
     def __init__(self, animation, duration=0.25, delay=0.0, completion=None):
         self.animation = animation
         self.duration = duration
@@ -12,7 +12,7 @@ class Animation(object):
         self.completion = completion
 
     def play(self):
-        """Perform the animation"""
+        """Perform the animation."""
         if self.completion is not None:
             def c(cmd, success):
                 self.completion(success)
@@ -28,6 +28,7 @@ class Animation(object):
 
 
 class ChainedAnimationComponent(Animation):
+    """A single step in a chain of animations."""
     def __init__(self, animation, next_animation):
         self.animation_obj = animation
         self.next_animation = next_animation
@@ -43,6 +44,7 @@ class ChainedAnimationComponent(Animation):
 
 
 class ChainedAnimation(object):
+    """Represents a series of several animations to be played in sequence."""
     def __init__(self, *animations):
         self.anims = [ChainedAnimationComponent(
                       a,
@@ -50,9 +52,10 @@ class ChainedAnimation(object):
                       ) for i, a in enumerate(animations)]
 
     def play(self):
+        """Perform the animations."""
         self.anims[0].play()
 
 
 def animate(animation, *args, **kwargs):
-    """A drop-in replacement for ui.animate"""
+    """A drop-in replacement for ui.animate."""
     Animation(animation, *args, **kwargs).play()
