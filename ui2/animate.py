@@ -53,6 +53,6 @@ class ChainedAnimation(object):
         self.anims[0].play()
 
 
-def animate(animation, duration=0.25, delay=0.0, completion=None):
+def animate(animation, *args, **kwargs):
     """A drop-in replacement for ui.animate"""
-    Animation(animation, duration, delay, completion).play()
+    Animation(animation, *args, **kwargs).play()
