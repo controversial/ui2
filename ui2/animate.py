@@ -1,5 +1,3 @@
-import warnings
-
 from objc_util import *
 
 
