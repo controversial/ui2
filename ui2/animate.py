@@ -53,7 +53,10 @@ class ChainedAnimationComponent(Animation):
         self.easing = self.animation_obj.easing
 
     def completion(self, success):
-        self.animation_obj.completion(success)
+        # If it has a completion function already, run it first.
+        if self.animation_obj.completion is not None:
+            self.animation_obj.completion(success)
+        # Then play the next animation if we're not at the end of the chain
         if self.next_animation is not None:
             self.next_animation.play()
 
