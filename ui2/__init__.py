@@ -7,7 +7,8 @@ from ui import *
 # Load subpackages
 from ui2.shapes import *
 from ui2.ui_io import *
-from ui2.animate import animate
+from ui2.animate import *
+from ui2.transition import *
 import ui2.path_helpers as pathutil
 
 # Load view classes
