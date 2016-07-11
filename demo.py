@@ -116,14 +116,39 @@ def demo_ChainedAnimation():
     def completion(success):
         print("Done!")
 
-    a_anim = ui2.Animation(animation_a, 1, completion=completion,
-                           easing=ui2.ANIMATE_EASE_IN)
+    a_anim = ui2.Animation(animation_a, 1, easing=ui2.ANIMATE_EASE_IN)
     b_anim = ui2.Animation(animation_b, 1, easing=ui2.ANIMATE_EASE_OUT)
 
     v.present("sheet", hide_title_bar=True)
 
     chain = ui2.ChainedAnimation(a_anim, b_anim)
     chain.play()
+
+
+def demo_Transitions():
+    v1 = ui.View()
+    v1.width = v1.height = 500
+    v1.background_color = "red"
+
+    v2 = ui.View()
+    v2.width = v2.height = 500
+    v2.background_color = "blue"
+
+    v3 = ui.View()
+    v3.width = v3.height = 500
+    v3.background_color = "lightgreen"
+
+    v1.present("sheet")
+
+    def transition2():
+        ui2.transition(v2, v3, ui2.TRANSITION_FLIP_FROM_LEFT, 1,
+                       lambda success: ui.delay(transition3, 0.5))
+
+    def transition3():
+        ui2.transition(v3, v1, ui2.TRANSITION_CROSS_DISSOLVE, 1)
+
+    ui2.transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5,
+                   lambda success: ui.delay(transition2, 0.5))
 
 
 # DEMO RUNNER -----------------------------------------------------------------
