@@ -121,7 +121,7 @@ def demo_ChainedAnimation():
 
     v.present("sheet", hide_title_bar=True)
 
-    chain = ui2.ChainedAnimation(a_anim, b_anim)
+    chain = ui2.ChainedAnimation(a_anim, b_anim, a_anim, b_anim)
     chain.play()
 
 
