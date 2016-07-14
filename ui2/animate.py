@@ -1,5 +1,6 @@
-from objc_util import *
+from copy import copy
 
+from objc_util import *
 
 # Constants representing easings. See http://apple.co/29FOF5i
 
@@ -19,13 +20,23 @@ class Animation(object):
         self.completion = completion
         self.easing = easing
 
+        self._completion = None  # Used internally when a callback is needed
+
     def play(self):
         """Perform the animation."""
-        if self.completion is not None:
+        # If any callbacks are set, we set up a block
+        funcs = (self.completion, self._completion)  # Possible callbacks
+        if any(funcs):
             def c(cmd, success):
-                self.completion(success)
+                """A completion function wrapping one or more callbacks."""
+                for func in funcs:
+                    if func:  # Only call the registered ones
+                        func(success)
+                # Lets the function be garbage collected when it's safe
                 release_global(ObjCInstance(cmd))
             oncomplete = ObjCBlock(c, argtypes=[c_void_p, c_bool])
+            # This prevents the oncomplete function from being garbage
+            # collected as soon as the play() function exits
             retain_global(oncomplete)
         else:
             oncomplete = None
@@ -50,6 +61,8 @@ class ChainedAnimationComponent(Animation):
         self.animation = self.animation_obj.animation
         self.easing = self.animation_obj.easing
 
+        self._completion = None
+
     def completion(self, success):
         # If it has a completion function already, run it first.
         if self.animation_obj.completion is not None:
@@ -61,17 +74,25 @@ class ChainedAnimationComponent(Animation):
 
 class ChainedAnimation(object):
     """Represents a series of several animations to be played in sequence."""
-    def __init__(self, *animations):
+    def __init__(self, *animations, completion=None):
+        self.completion = completion
+
         anims = []
         for i, a in reversed(list(enumerate(animations))):
+            
             if i == len(animations) - 1:
                 # This is the last element in the chain (first in iteration),
                 # so it has no successor. We can use the old Animation object.
-                anims.append(a)
+                anims.append(copy(a))
             else:
-                anims.append(ChainedAnimationComponent(a, anims[-1]))
+                anims.append(ChainedAnimationComponent(copy(a), anims[-1]))
 
         self.anims = anims[::-1]
+
+        # Register the completion event on the final component
+
+        if self.completion is not None:
+            self.anims[-1]._completion = self.completion
 
     def play(self):
         """Perform the animations."""
