@@ -21,20 +21,30 @@ class Transition(object):
         self.duration = duration
         self.completion = completion
 
+        self._completion = None
+
     def play(self):
         """Perform the transition."""
         # Make frames match, it's way cleaner.
         self.view2.frame = self.view1.frame
 
-        # Fix for early garbage-collection of completion function
-        if self.completion is not None:
+        # If any callbacks are set, we set up a block
+        funcs = (self.completion, self._completion)  # Possible callbacks
+        if any(funcs):
             def c(cmd, success):
-                    self.completion(success)
-                    release_global(ObjCInstance(cmd))
+                """A completion function wrapping one or more callbacks."""
+                for func in funcs:
+                    if func:  # Only call the registered ones
+                        func(success)
+                # Lets the function be garbage collected when it's safe
+                release_global(ObjCInstance(cmd))
             oncomplete = ObjCBlock(c, argtypes=[c_void_p, c_bool])
+            # This prevents the oncomplete function from being garbage
+            # collected as soon as the play() function exits
             retain_global(oncomplete)
         else:
             oncomplete = None
+
         # Perform the transition
         UIView.transitionFromView_toView_duration_options_completion_(
             self.view1, self.view2, self.duration, self.effect, oncomplete
@@ -52,6 +62,8 @@ class ChainedTransitionComponent(Transition):
         self.effect = self.transition_obj.effect
         self.duration = self.transition_obj.duration
 
+        self._completion = None
+
     def completion(self, success):
         # If it has a completion function already, run it first.
         if self.transition_obj.completion is not None:
@@ -63,7 +75,9 @@ class ChainedTransitionComponent(Transition):
 
 class ChainedTransition(object):
     """Represents a series of several transitions to be played in sequence."""
-    def __init__(self, *transitions):
+    def __init__(self, *transitions, completion=None):
+        self.completion = completion
+
         transits = []
         for i, a in reversed(list(enumerate(transitions))):
             if i == len(transitions) - 1:
@@ -74,6 +88,11 @@ class ChainedTransition(object):
                 transits.append(ChainedTransitionComponent(a, transits[-1]))
 
         self.transitions = transits[::-1]
+
+        # Register the completion event on the final component
+
+        if self.completion is not None:
+            self.transitions[-1]._completion = self.completion
 
     def play(self):
         """Perform the transitions."""
