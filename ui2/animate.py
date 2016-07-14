@@ -1,5 +1,3 @@
-import warnings
-
 from objc_util import *
 
 
@@ -64,10 +62,16 @@ class ChainedAnimationComponent(Animation):
 class ChainedAnimation(object):
     """Represents a series of several animations to be played in sequence."""
     def __init__(self, *animations):
-        self.anims = [ChainedAnimationComponent(
-                      a,
-                      animations[i + 1] if i < len(animations) - 1 else None
-                      ) for i, a in enumerate(animations)]
+        anims = []
+        for i, a in reversed(list(enumerate(animations))):
+            if i == len(animations) - 1:
+                # This is the last element in the chain (first in iteration),
+                # so it has no successor. We can use the old Animation object.
+                anims.append(a)
+            else:
+                anims.append(ChainedAnimationComponent(a, anims[-1]))
+
+        self.anims = anims[::-1]
 
     def play(self):
         """Perform the animations."""
