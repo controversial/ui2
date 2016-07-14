@@ -163,6 +163,18 @@ def demo_ChainedTransition():
     ui2.ChainedTransition(t1, t2, t3).play()
 
 
+def demo_BlurView():
+    a = ui.View()
+    a.add_subview(ui.ImageView())
+    a.subviews[0].image = ui.Image.named('test:Lenna')
+    a.add_subview(ui2.BlurView())
+    a.frame = a.subviews[0].frame = a.subviews[1].frame = (0, 0, 500, 500)
+    a.present('sheet')
+
+    toggle = ui2.Animation(a.subviews[1].toggle_brightness, 1)
+    ui2.ChainedAnimation(toggle, toggle, toggle, toggle).play()
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 

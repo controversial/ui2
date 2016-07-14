@@ -14,3 +14,4 @@ import ui2.path_helpers as pathutil
 # Load view classes
 from ui2.view_classes.PathView import PathView
 from ui2.view_classes.ProgressPathView import ProgressPathView
+from ui2.view_classes.BlurView import BlurView
