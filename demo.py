@@ -2,6 +2,10 @@ import ui
 import ui2
 
 
+def _f(*args, **kwargs):
+    print('Hello')
+
+
 # DEMOS -----------------------------------------------------------------------
 
 
@@ -23,10 +27,10 @@ def demo_PathView():
         pv.x, pv.y = 0, 0
         pv.width, pv.height = 50, 50
     # BASIC USAGE
-    v = ui.View()
+    v = ui.View(background_color="white")
     v.width = v.height = 500
     v.add_subview(pv)
-    v.present("sheet")
+    v.present("sheet", hide_title_bar=True)
     # PERFORM THE ANIMATIONS
     ui.animate(scaleWidth, 1)
     ui.delay(lambda: ui.animate(scaleHeight, 1), 1)
@@ -52,12 +56,12 @@ def demo_ProgressPathView():
     p.add_curve(50, 450, 20, 250, 480, 250)
     p.close()  # This makes the end look nicer
 
-    ppv = ui2.ProgressPathView(p, color="red")
+    ppv = ui2.ProgressPathView(p)
 
-    view = ui.View()
+    view = ui.View(background_color="white")
     view.add_subview(ppv)
     view.width = view.height = ppv.width = ppv.height = 500
-    view.present("sheet")
+    view.present("sheet", hide_title_bar=True)
 
     def advance():
         """Advance by a random amount and repeat."""
@@ -72,95 +76,56 @@ def demo_ProgressPathView():
 
 
 def demo_Animation():
-    v = ui.View()
-    v.width = v.height = 500
-    v.background_color = "red"
-
-    b = ui.View()
-    b.width = b.height = b.x = 100
-    b.y = 200
-    b.background_color = "white"
-
+    v = ui.View(frame=(0, 0, 500, 500), background_color="red")
+    b = ui.View(frame=(100, 200, 100, 100), background_color="white")
     v.add_subview(b)
 
     def a():
         b.x = 300
 
-    def completion(success):
-        print("Done!")
-
     v.present("sheet", hide_title_bar=True)
 
-    ui2.animate(a, 0.25, 0.25, completion)
+    ui2.animate(a, 0.25, 0.25, _f)
 
 
 def demo_ChainedAnimation():
-    v = ui.View()
-    v.width = v.height = 500
-    v.background_color = "red"
-
-    b = ui.View()
-    b.width = b.height = b.x = 100
-    b.y = 200
-    b.background_color = "white"
-
+    v = ui.View(frame=(0, 0, 500, 500), background_color="red")
+    b = ui.View(frame=(100, 200, 100, 100), background_color="white")
     v.add_subview(b)
 
     def animation_a():
-        print("Animating...")
         b.x = 300
 
     def animation_b():
         b.x = 100
-
-    def completion(success):
-        print("Done!")
 
     a_anim = ui2.Animation(animation_a, 1, easing=ui2.ANIMATE_EASE_IN)
     b_anim = ui2.Animation(animation_b, 1, easing=ui2.ANIMATE_EASE_OUT)
 
     v.present("sheet", hide_title_bar=True)
 
-    chain = ui2.ChainedAnimation(a_anim, b_anim, a_anim, b_anim, completion=lambda success: print("Hey"))
+    chain = ui2.ChainedAnimation(a_anim, b_anim, a_anim, b_anim, completion=_f)
     chain.play()
 
 
-def demo_Transitions():
-    v1 = ui.View()
-    v1.width = v1.height = 500
-    v1.background_color = "red"
-
-    v2 = ui.View()
-    v2.width = v2.height = 500
-    v2.background_color = "blue"
-
-    v1.present('sheet')
-
-    ui2.transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5,
-                   lambda success: print('success' if success else 'failed'))
-
+def demo_Transition():
+    v1 = ui.View(frame=(0, 0, 500, 500), background_color="red")
+    v2 = ui.View(background_color="blue")
+    v1.present('sheet', hide_title_bar=True)
+    ui2.transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5, _f)
 
 def demo_ChainedTransition():
-
-    v1 = ui.View()
-    v1.width = v1.height = 500
-    v1.background_color = "red"
-
-    v2 = ui.View()
-    v2.width = v2.height = 500
-    v2.background_color = "blue"
-
-    v3 = ui.View()
-    v3.width = v3.height = 500
-    v3.background_color = "lightgreen"
-
-    v1.present("sheet")
+    v1 = ui.View(frame=(0, 0, 500, 500), background_color="red")
+    v2 = ui.View(background_color="blue")
+    v3 = ui.View(background_color = "lightgreen")
 
     t1 = ui2.Transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5)
     t2 = ui2.Transition(v2, v3, ui2.TRANSITION_FLIP_FROM_LEFT, 1)
     t3 = ui2.Transition(v3, v1, ui2.TRANSITION_CROSS_DISSOLVE, 1)
 
-    ui2.ChainedTransition(t1, t2, t3).play()
+    v1.present("sheet", hide_title_bar=True)
+
+    ui2.ChainedTransition(t1, t2, t3, completion=_f).play()
 
 
 def demo_BlurView():
@@ -169,7 +134,7 @@ def demo_BlurView():
     a.subviews[0].image = ui.Image.named('test:Lenna')
     a.add_subview(ui2.BlurView())
     a.frame = a.subviews[0].frame = a.subviews[1].frame = (0, 0, 500, 500)
-    a.present('sheet')
+    a.present('sheet', hide_title_bar=True)
 
     toggle = ui2.Animation(a.subviews[1].toggle_brightness, 1)
     ui2.ChainedAnimation(toggle, toggle, toggle, toggle).play()
