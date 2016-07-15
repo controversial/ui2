@@ -140,6 +140,14 @@ def demo_BlurView():
     ui2.ChainedAnimation(toggle, toggle, toggle, toggle).play()
 
 
+def demo_delay():
+    print('Starting')
+    
+    @ui2.delayed_by(2)
+    def func():
+        print("Finished")
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 
@@ -154,7 +162,7 @@ if __name__ == "__main__":
     # Let user pick one
     demo = dialogs.list_dialog(
         "Choose a demo",
-        sorted([fn.lstrip(prefix).replace("_", " ") for fn in functions])
+        sorted([fn.replace(prefix, "").replace("_", " ") for fn in functions])
     )
 
     # Run the demo
