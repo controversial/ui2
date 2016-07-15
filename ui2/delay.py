@@ -47,7 +47,11 @@ class Delay(object):
         self.id = str(uuid.uuid4()) if id is None else id
         self.manager = manager
 
-        self.timer = threading.Timer(self.seconds, self.function)
+        def func():
+            self.function()
+            self._deregister()
+
+        self.timer = threading.Timer(self.seconds, func)
 
         self.manager.register(self)
 
@@ -58,6 +62,10 @@ class Delay(object):
         """Stop the delay and remove it from its manager."""
         self.timer.cancel()
         self.manager._delays.pop(self.id)
+
+    def _deregister(self):
+        self.manager._delays.pop(self.id)
+        self.manager = None
 
 
 def delay(func, seconds, id=None, manager=delay_manager):
