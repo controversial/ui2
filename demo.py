@@ -143,7 +143,7 @@ def demo_BlurView():
 def demo_delay():
     print('Starting')
     
-    @ui2.delayed_by(2)
+    @ui2.delayed_by(2, id="Hello")
     def func():
         print("Finished")
 
