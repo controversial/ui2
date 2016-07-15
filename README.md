@@ -5,6 +5,7 @@ Builds on Pythonista's UI module to provide extra functionality
 Some of the most notable features of `ui2` are as follows:
 - Transitioning between views
 - Progress bars, which can take any shape representable with a `ui.Path`, including lines, circles, and rectangles
+- An entirely new system for delays. This introduces a new system for tracking delays with IDs, and allows for multiple "delay managers" to make things less global.
 - Classes for controlling animation, which include support for different easings, and chaining several animations to run on sequence.
 - Functions for scaling and stretching `ui.Path` objects, as well as a convenience `ui2.PathView` class which displays a path auch that as the `PathView` changes size, it intelligently stretches its path to match.
 
