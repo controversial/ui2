@@ -16,6 +16,24 @@ A list of things I'd like to add, or things that are planned
 - [ ] Pull to refresh
 - [ ] `BlurView`
 
+# New features for UIs
+- [x] Transitions
+  - [ ] Make transitions work on subviews
+  - [ ] Chain transitions together
+- Animations
+  - [x] iOS included easings
+  - [ ] Custom easings (may be impossible)
+  - [x] Chained animations to be executed in sequence
+  - [ ] Repeated animations
+- New `ui2.delay` interface
+  - Decorators for delay:
+    ```python
+    @ui2.delayed(1)
+    def hi():
+        print("Hello")
+    ```
+  - Named delays which can be cancelled individually
+
 # Misc
 - [ ] Create `.pyui` files from in-memory `ui.View` objects - Individual components can be created with their subviews, but not the top-level metadata.
 - [ ] Test suite
