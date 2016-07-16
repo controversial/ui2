@@ -148,12 +148,10 @@ def demo_Delays():
         print("Finished")
 
 def demo_Status_Bar():
-    ui2.statusbar.set_color(0)
-    print("Status bar is black!")
-    @ui2.delayed_by(2)
-    def whiten():
-        ui2.statusbar.set_color(1)
-        print("Status bar is white again!")
+    ui2.statusbar.color = 0
+    ui2.statusbar.background_color = "#ff8"
+    print("Look at the status bar!")
+    ui2.delay(ui2.statusbar.reset, 5)
 
 
 # DEMO RUNNER -----------------------------------------------------------------
