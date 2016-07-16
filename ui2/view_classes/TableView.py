@@ -9,7 +9,48 @@ class Cell():
 
     This class "subclasses" ui.TableViewCell by wrapping it.
     """
-    pass
+    def __init__(self):
+        self._cell = cell
+
+    @property
+    def accessory_type(self):
+        return self._cell.accessory_type
+
+    @accessory_type.setter
+    def accessory_type(self, value):
+        self._cell.accessory_type = value
+
+    @property
+    def content_view(self):
+        return self._cell.content_view
+
+    @property
+    def detail_text_label(self):
+        return self._cell.detail_text_label
+
+    @property
+    def image_view(self):
+        return self._cell.image_view
+
+    @property
+    def selectable(self):
+        return self._cell.selectable
+
+    @selectable.setter
+    def selectable(self, value):
+        self._cell.selectable = value
+
+    @property
+    def selected_background_view(self):
+        return self._cell.selected_background_view
+
+    @selected_background_view.setter
+    def selected_background_view(self, value):
+        self._cell.selected_background_view = value
+
+    @property
+    def text_label(self):
+        return self._cell.text_label
 
 
 class Section(collections.MutableSet):
