@@ -44,7 +44,7 @@ class Delay(object):
     def __init__(self, func, seconds, id=None, manager=delay_manager):
         self.function = func
         self.seconds = seconds
-        self.id = str(uuid.uuid4()) if id is None else id
+        self.id = id or str(uuid.uuid4())
         self.manager = manager
 
         def func():
