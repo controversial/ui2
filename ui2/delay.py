@@ -38,7 +38,7 @@ class DelayManager(object):
     @property
     def description(self):
         ds = self._delays.values()
-        return {d.id: {"delay": d.seconds, "function": d.function} for d in ds}
+        return {d.id: d.description for d in ds}
 
     def __repr__(self):
         if self.delays:
@@ -116,6 +116,15 @@ class Delay(object):
     def _deregister(self):
         self.manager._delays.pop(self.id)
         self.manager = None
+
+    # Access data
+    @property
+    def description(self):
+        return {
+            "id": self.id,
+            "delay": self.seconds,
+            "function": self.function
+        }
 
 
 def delay(func, seconds, id=None, manager=delay_manager):
