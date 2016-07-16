@@ -140,12 +140,20 @@ def demo_BlurView():
     ui2.ChainedAnimation(toggle, toggle, toggle, toggle).play()
 
 
-def demo_delay():
+def demo_Delays():
     print('Starting')
     
     @ui2.delayed_by(2, id="Hello")
     def func():
         print("Finished")
+
+def demo_Status_Bar():
+    ui2.statusbar.set_color(0)
+    print("Status bar is black!")
+    @ui2.delayed_by(2)
+    def whiten():
+        ui2.statusbar.set_color(1)
+        print("Status bar is white again!")
 
 
 # DEMO RUNNER -----------------------------------------------------------------
@@ -167,4 +175,4 @@ if __name__ == "__main__":
 
     # Run the demo
     if demo is not None:
-        globals()[prefix + demo]()
+        globals()[prefix + demo.replace(" ", "_")]()
