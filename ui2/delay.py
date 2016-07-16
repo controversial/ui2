@@ -1,6 +1,8 @@
 import threading
 import uuid
 
+from ui2.utils import make_table
+
 
 class DelayManager(object):
     """A global manager for all delays."""
@@ -41,47 +43,13 @@ class DelayManager(object):
         return {d.id: d.description for d in ds}
 
     def __repr__(self):
-        if self.delays:
-            desc = self.description
-            # Set up table columns. The columns are:
-            # 1. ID
-            ids = list(desc.keys())
-            max_id_len = max(len(max(ids, key=len)), len("ID"))
-            # 2. Delay
-            delays = [d["delay"] for d in desc.values()]
-            max_delay_len = max(len(str(max(delays))), len("Delay"))
-            # 3. Function name
-            functions = [d["function"] for d in desc.values()]
-            max_function_len = max(
-                len(max(functions, key=lambda x: len(x.__name__)).__name__),
-                len("Function")
-            )
-
-            # Make an ASCII table
-            out = "|"
-            # The headers
-            out += " ID ".ljust(max_id_len + 2) + "|"
-            out += " Delay ".ljust(max_delay_len + 2) + "|"
-            out += " Function ".ljust(max_function_len + 2) + "|"
-            out += "\n"
-            # The separator
-            separator_len = max_id_len + max_delay_len + max_function_len + 8
-            out += "|" + "-" * separator_len + "|" + "\n"
-            # The body
-            for id in ids:
-                d = desc[id]
-                out += "| {} | {} | {} |\n".format(
-                    id.ljust(max_id_len),
-                    str(d["delay"]).ljust(max_delay_len),
-                    d["function"].__name__.ljust(max_function_len)
-                )
-
-            return out
-
-        else:
-            return ("| ID | Delay | Function |\n"
-                    "|-----------------------|\n"
-                    "|    |       |          |\n")
+        data = list(self.description.values())
+        # Rename keys
+        for d in data:
+            d["ID"] = d.pop("id")
+            d["Delay"] = d.pop("delay")
+            d["Function"] = d.pop("function").__name__
+        return make_table(data, ["ID", "Delay", "Function"])
 
     def __str__(self):
         return self.__repr__()
