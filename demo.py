@@ -141,11 +141,28 @@ def demo_BlurView():
 
 
 def demo_Delays():
-    print('Starting')
-    
+    print("* Starting *")
+    print()
+    print("Delays in ui2.delay_manager:")
+    print(ui2.delay_manager)
+    print()
+
     @ui2.delayed_by(2, id="Hello")
     def func():
-        print("Finished")
+        print("* Finished *")
+        print()
+
+    # On a different manager, this won't show up in results!
+    @ui2.delayed_by(2.1, manager=ui2.DelayManager())
+    def print_at_end():
+        print("Delays in ui2.delay_manager:")
+        print(ui2.delay_manager)
+
+    print("* Started *")
+    print()
+    print("Delays in ui2.delay_manager:")
+    print(ui2.delay_manager)
+    print()
 
 def demo_Status_Bar():
     ui2.statusbar.color = 0
