@@ -10,7 +10,7 @@ class Cell():
     This class "subclasses" ui.TableViewCell by wrapping it.
     """
     def __init__(self):
-        self._cell = cell
+        self._cell = ui.TableViewCell()
 
     @property
     def accessory_type(self):
