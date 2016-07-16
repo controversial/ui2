@@ -126,6 +126,12 @@ class Delay(object):
             "function": self.function
         }
 
+    def __repr__(self):
+        return "ui2.Delay ({})".format(self.id)
+
+    def __str__(self):
+        return self.id
+
 
 def delay(func, seconds, id=None, manager=delay_manager):
     """Call a function after a given delay."""
