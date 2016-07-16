@@ -5,7 +5,10 @@ import ui2
 class PathView(ui.View):
     """ A class for displaying a ui.Path inside a ui.View, which automatically
     scales and moves the path when you change the frame """
-    def __init__(self, path, color="black", shadow=("black", 0, 0, 0)):
+    def __init__(self, path, color="black", shadow=("black", 0, 0, 0), *args,
+                 **kwargs):
+        super().__init__(self, *args, **kwargs)
+
         # Store arguments
         self._path = path
         self._color = color

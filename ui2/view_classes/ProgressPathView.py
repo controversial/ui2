@@ -15,7 +15,9 @@ class ProgressPathView(ui.View):
     This allows you not only to create linear and circular progress bars, but
     to create progress bars of any shape """
     def __init__(self, path, width=5, color="#21abed",
-                 show_track=True, track_width=5, track_color="#eee"):
+                 show_track=True, track_width=5, track_color="#eee",
+                 *args, **kwargs):
+        super().__init__(self, *args, **kwargs)
 
         # Draw the full path on one layer
         self._track_layer = ObjCClass("CAShapeLayer").new()
