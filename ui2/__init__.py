@@ -9,6 +9,7 @@ from ui2.shapes import *
 from ui2.ui_io import *
 import ui2.path_helpers as pathutil
 from ui2.statusbar import statusbar
+from ui2.screen import screen
 
 # Load replacements for ui functions
 from ui2.animate import *

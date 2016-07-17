@@ -178,6 +178,14 @@ def demo_Status_Bar():
     ui2.delay(ui2.statusbar.reset, 5)
 
 
+def demo_Screen():
+    print("Screen orientation: {} down".format(ui2.screen.orientation))
+    print("Screen size: {}".format(ui2.screen.size))
+    print("Smaller screen dimension: {}".format(min(ui2.screen)))
+    print("Your screen {} a retina screen".format(
+        "is" if ui2.screen.is_retina else "is not"
+    ))
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 
@@ -192,7 +200,7 @@ if __name__ == "__main__":
     # Let user pick one
     demo = dialogs.list_dialog(
         "Choose a demo",
-        sorted([fn.replace(prefix, "").replace("_", " ") for fn in functions]
+        sorted([fn.replace(prefix, "").replace("_", " ") for fn in functions],
                key=lambda x: x.lower())
     )
 
