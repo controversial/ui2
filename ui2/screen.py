@@ -22,6 +22,15 @@ class _ScreenOrientation(object):
     def __str__(self):
         return orientation_codes[self.code]
 
+    def __int__(self):
+        return self.code
+
+    def __float__(self):
+        return float(self.code)
+
+    def __repr__(self):
+        return repr(self.code)
+
     @property
     def portrait(self):
         return self.code in (1, 3)
