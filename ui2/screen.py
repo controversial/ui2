@@ -79,7 +79,7 @@ class Screen(object):
     @property
     def portrait(self):
         return self.orientation.portrait
-    
+
     @property
     def landscape(self):
         return self.orientation.landscape
@@ -87,5 +87,11 @@ class Screen(object):
     @property
     def is_retina(self):
         return UIScreen.mainScreen().scale() == 2.0
+
+    def __repr__(self):
+        a = "Retina screen" if self.is_retina else "Screen"  
+        b = str(self.size)
+        c = "with the {} side down".format(self.orientation)
+        return " ".join((a, b, c))
 
 screen = Screen()

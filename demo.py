@@ -179,12 +179,8 @@ def demo_Status_Bar():
 
 
 def demo_Screen():
-    print("Screen orientation: {} down".format(ui2.screen.orientation))
-    print("Screen size: {}".format(ui2.screen.size))
-    print("Smaller screen dimension: {}".format(min(ui2.screen)))
-    print("Your screen {} a retina screen".format(
-        "is" if ui2.screen.is_retina else "is not"
-    ))
+    print(ui2.screen)
+
 
 # DEMO RUNNER -----------------------------------------------------------------
 
