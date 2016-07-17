@@ -182,6 +182,15 @@ def demo_Screen():
     print(ui2.screen)
 
 
+def demo_CameraView():
+    from ui2.view_classes.CameraView import CameraView
+    a = CameraView()
+    a.background_color = "#fff"
+    a.start()
+    a.present()
+    a.will_close = lambda: a.stop()
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 
