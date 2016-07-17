@@ -192,7 +192,8 @@ if __name__ == "__main__":
     # Let user pick one
     demo = dialogs.list_dialog(
         "Choose a demo",
-        sorted([fn.replace(prefix, "").replace("_", " ") for fn in functions])
+        sorted([fn.replace(prefix, "").replace("_", " ") for fn in functions]
+               key=lambda x: x.lower())
     )
 
     # Run the demo
