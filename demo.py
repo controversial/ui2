@@ -15,17 +15,22 @@ def demo_PathView():
     pv = ui2.PathView(p)
     pv.x = 150
     pv.y = 150
+
     # ANIMATION FUNCTIONS
     def scaleWidth():
         pv.width = 200
+
     def scaleHeight():
         pv.height = 200
+
     def scaleBoth():
         pv.width = 300
         pv.height = 300
+
     def scaleBack():
         pv.x, pv.y = 0, 0
         pv.width, pv.height = 50, 50
+
     # BASIC USAGE
     v = ui.View(background_color="white")
     v.width = v.height = 500
@@ -114,10 +119,11 @@ def demo_Transition():
     v1.present('sheet', hide_title_bar=True)
     ui2.transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5, _f)
 
+
 def demo_ChainedTransition():
     v1 = ui.View(frame=(0, 0, 500, 500), background_color="red")
     v2 = ui.View(background_color="blue")
-    v3 = ui.View(background_color = "lightgreen")
+    v3 = ui.View(background_color="lightgreen")
 
     t1 = ui2.Transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5)
     t2 = ui2.Transition(v2, v3, ui2.TRANSITION_FLIP_FROM_LEFT, 1)
@@ -163,6 +169,7 @@ def demo_Delays():
     print("Delays in ui2.delay_manager:")
     print(ui2.delay_manager)
     print()
+
 
 def demo_Status_Bar():
     ui2.statusbar.color = 0
