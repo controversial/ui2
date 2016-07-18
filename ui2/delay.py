@@ -1,7 +1,7 @@
 import threading
 import uuid
 
-from ui2.utils import make_table
+from ui2.utils.tables import make_table
 
 
 class DelayManager(object):
