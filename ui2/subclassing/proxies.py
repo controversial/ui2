@@ -4,14 +4,19 @@
 ========== NOTICE OF MODIFICATION ==========
 
 This version HAS BEEN MODIFIED from the original copy, which was published on
-July 20, 2006. These modifications were made on July 18, 2016. The
-modifications include:
-  - Compliance with the PEP 8 style guide
-  - Support for Python 3
-  - Moving from the old format syntax (%) to the newer .format() syntax.
+July 20, 2006.
 
-Overall, these modifications serve as a clean-up, rather than a change to the
-functionality or structure of the code.
+Modifications made on July 18, 2016:
+  - Rewriting for compliance with the PEP 8 style guide
+  - Supporting for Python 3
+  - Movinging from the old format syntax (%) to the newer .format() syntax.
+Modifications made on July 19, 2016:
+  - Removing CallbackProxy, LazyProxy, CallbackWrapper, and LazyWrapper
+  - Removing use of __slots__ because of conflicts
+
+Overall, these modifications serve as a clean-up and removal of classes I don't
+need, rather than a change to the functionality or structure of the code that
+remains after my removals.
 
 =========== ORIGINAL AUTHORSHIP AND LICENSING ==========
 
@@ -85,7 +90,6 @@ accompanying credits file.
 
 class AbstractProxy(object):
     """Delegates all operations (except ``.__subject__``) to another object."""
-    __slots__ = ()
 
     # Delegate getting, setting, and deleting attributes
 
@@ -211,48 +215,12 @@ class AbstractProxy(object):
 class ObjectProxy(AbstractProxy):
     """Proxy for a specific object."""
 
-    __slots__ = "__subject__"
-
     def __init__(self, subject):
         self.__subject__ = subject
 
 
-class CallbackProxy(AbstractProxy):
-    """Proxy for a dynamically-chosen object."""
-
-    __slots__ = "__callback__"
-
-    def __init__(self, func):
-        set_callback(self, func)
-
-set_callback = CallbackProxy.__callback__.__set__
-get_callback = CallbackProxy.__callback__.__get__
-CallbackProxy.__subject__ = property(lambda self, gc=get_callback: gc(self)())
-
-
-class LazyProxy(CallbackProxy):
-    """Proxy for a lazily-obtained object, that is cached on first use."""
-    __slots__ = "__cache__"
-
-get_cache = LazyProxy.__cache__.__get__
-set_cache = LazyProxy.__cache__.__set__
-
-
-def __subject__(self, get_cache=get_cache, set_cache=set_cache):
-    try:
-        return get_cache(self)
-    except AttributeError:
-        set_cache(self, get_callback(self)())
-        return get_cache(self)
-
-LazyProxy.__subject__ = property(__subject__, set_cache)
-del __subject__
-
-
 class AbstractWrapper(AbstractProxy):
     """Mixin to allow extra behaviors and attributes on proxy instance."""
-    __slots__ = ()
-
     def __getattribute__(self, attr, oga=object.__getattribute__):
         if attr.startswith("__"):
             subject = oga(self, "__subject__")
@@ -285,12 +253,4 @@ class AbstractWrapper(AbstractProxy):
 
 
 class ObjectWrapper(ObjectProxy, AbstractWrapper):
-    __slots__ = ()
-
-
-class CallbackWrapper(CallbackProxy, AbstractWrapper):
-    __slots__ = ()
-
-
-class LazyWrapper(LazyProxy, AbstractWrapper):
-    __slots__ = ()
+    pass
