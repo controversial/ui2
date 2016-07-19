@@ -1,11 +1,19 @@
-"""Modified from ProxyTypes 0.9 (https://pypi.io/project/ProxyTypes/).
-
-This version is PEP 8 compliant, supports Python 3. This is a clean-up with
-very few changes to the structure and logic of the code.
-"""
+"""A modified copy of ProxyTypes 0.9 (https://pypi.io/project/ProxyTypes/)."""
 
 """
-LEGAL:
+========== NOTICE OF MODIFICATION ==========
+
+This version HAS BEEN MODIFIED from the original copy, which was published on
+July 20, 2006. These modifications were made on July 18, 2016. The
+modifications include:
+  - Compliance with the PEP 8 style guide
+  - Support for Python 3
+  - Moving from the old format syntax (%) to the newer .format() syntax.
+
+Overall, these modifications serve as a clean-up, rather than a change to the
+functionality or structure of the code.
+
+=========== ORIGINAL AUTHORSHIP AND LICENSING ==========
 
 ProxyTypes was originally written by Phillip J. Eby, and published under the
 Zope Public License (ZPL). This modified version is published under the MIT
