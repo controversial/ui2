@@ -121,9 +121,16 @@ def demo_Transition():
 
 
 def demo_ChainedTransition():
-    v1 = ui.View(frame=(0, 0, 500, 500), background_color="red")
-    v2 = ui.View(background_color="blue")
+    v1 = ui.View(frame=(0, 0, 500, 500), background_color="pink")
+    v1.add_subview(ui.Button(frame=(100, 100, 300, 20)))
+    v1.subviews[0].title = "Hello! I'm a button"
+    v1.add_subview(ui.Slider(frame=(100, 300, 100, 20)))
+    v2 = ui.View(background_color="lightblue")
+    v2.add_subview(ui.ImageView(frame=(100, 100, 300, 300)))
+    v2.subviews[0].image = ui.Image.named('test:Peppers')
     v3 = ui.View(background_color="lightgreen")
+    v3.add_subview(ui.Switch(frame=(100, 100, 20, 10)))
+    v3.subviews[0].value = True
 
     t1 = ui2.Transition(v1, v2, ui2.TRANSITION_CURL_UP, 1.5)
     t2 = ui2.Transition(v2, v3, ui2.TRANSITION_FLIP_FROM_LEFT, 1)
@@ -131,19 +138,32 @@ def demo_ChainedTransition():
 
     v1.present("sheet", hide_title_bar=True)
 
-    ui2.ChainedTransition(t1, t2, t3, completion=_f).play()
+    ui2.delay(ui2.ChainedTransition(t1, t2, t3).play, 1)
 
 
 def demo_BlurView():
-    a = ui.View()
-    a.add_subview(ui.ImageView())
-    a.subviews[0].image = ui.Image.named('test:Lenna')
+    a = ui.View(frame=(0, 0, 500, 500))
+    a.add_subview(ui.ImageView(frame=(0, 0, 500, 500)))
+    a.subviews[0].image = ui.Image.named('test:Peppers')
     a.add_subview(ui2.BlurView())
-    a.frame = a.subviews[0].frame = a.subviews[1].frame = (0, 0, 500, 500)
+    a.subviews[1].frame = (100, 100, 100, 100)
     a.present('sheet', hide_title_bar=True)
 
-    toggle = ui2.Animation(a.subviews[1].toggle_brightness, 1)
-    ui2.ChainedAnimation(toggle, toggle, toggle, toggle).play()
+    toggle = ui2.Animation(a.subviews[1].toggle_brightness, 0.5)
+    def movea():
+        a.subviews[1].x = 300
+    def moveb():
+        a.subviews[1].y = 300
+    def movec():
+        a.subviews[1].x = 100
+    def moved():
+        a.subviews[1].y = 100
+    movea = ui2.Animation(movea, 1)
+    moveb = ui2.Animation(moveb, 1)
+    movec = ui2.Animation(movec, 1)
+    moved = ui2.Animation(moved, 1)
+    ui2.ChainedAnimation(movea, moveb, movec, moved, toggle,
+                         movea, moveb, movec, moved).play()
 
 
 def demo_Delays():
@@ -175,7 +195,7 @@ def demo_Status_Bar():
     ui2.statusbar.color = 0
     ui2.statusbar.background_color = "#ff8"
     print("Look at the status bar!")
-    ui2.delay(ui2.statusbar.reset, 5)
+    ui2.delay(ui2.statusbar.reset, 15)
 
 
 def demo_Screen():
