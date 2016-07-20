@@ -211,6 +211,22 @@ def demo_CameraView():
     a.will_close = lambda: a.stop()
 
 
+def demo_Subclassing():
+    class SuperSlider(ui2.subclassable(ui.Slider)):
+        def set_halfway(self):
+            self.value = 0.5
+
+    ss = SuperSlider(frame=(0, 0, 200, 40))
+    print("ss, a \"subclass\" of ui.Slider: {}".format(ss))
+    print("The subclassible proxy used forwards atttributes:")
+    print("  ss.frame = {}".format(ss.frame))
+    print("Methods from the subclass are preserved, though:")
+    ss.present("sheet")
+    print("  ss.set_halfway()")
+    ss.set_halfway()
+    ui2.delay(ss.close, 0.5)
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 
