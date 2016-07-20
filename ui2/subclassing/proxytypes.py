@@ -3,8 +3,8 @@
 """
 ========== NOTICE OF MODIFICATION ==========
 
-This version HAS BEEN MODIFIED from the original 'proxies.py' file, which was
-published on July 20, 2006.
+This version HAS BEEN MODIFIED from the original 'proxies.py' file by Luke Deen
+Taylor. The original file was published on July 20, 2006.
 
 Modifications made on July 18, 2016:
   - Rewriting for compliance with the PEP 8 style guide
@@ -21,9 +21,7 @@ remains after my removals.
 
 =========== ORIGINAL AUTHORSHIP AND LICENSING ==========
 
-ProxyTypes was originally written by Phillip J. Eby, and published under the
-Zope Public License (ZPL). This modified version is published under the MIT
-license, available in the LICENSE.md file at the root of this repository.
+ProxyTypes was originally written by Phillip J. Eby, and is ZPL licensed.
 
 The ZPL is as follows:
 
