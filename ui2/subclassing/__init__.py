@@ -1,5 +1,6 @@
 """A submodule for helping to "subclass" ui.View objects."""
 
+import objc_util
 import ui
 from ui2.subclassing import proxies
 
@@ -24,9 +25,13 @@ class ViewClassProxy(proxies.TypeProxy, ui.View):
         super().__init__(view_type, *args, **kwargs)
         # Add subject as a subview
         object.__getattribute__(self, "add_subview")(self.__subject__)
-        # Allow flexible width and height so that this view fills its entire
-        # container.
-        object.__setattr__(self, "flex", "WH")
+        # Turn off clipping of subviews so that the wrapped view is visible.
+        ptr = object.__getattribute__(self, "_objc_ptr")
+
+        class ObjCDummy():
+            """Used to trick ObjCInstance into working on this proxy class."""
+            _objc_ptr = ptr
+        objc = objc_util.ObjCInstance(ObjCDummy())
 
 
 class ViewClassWrapper(ViewClassProxy, proxies.AbstractWrapper):
