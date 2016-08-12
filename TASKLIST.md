@@ -14,25 +14,28 @@ A list of things I'd like to add, or things that are planned
   - This will wrap an existing view, adding a menu that can slide out from the side. There should be no visible change to the view.
   - It will have methods for showing and hiding, the menu, etc.
 - [ ] Pull to refresh
-- [ ] `BlurView`
+- [x] `BlurView`
+- [ ] `MapView`
+- [ ] 
 
 # New features for UIs
 - [x] Transitions
   - [ ] Make transitions work on subviews
-  - [ ] Chain transitions together
+  - [x] Chain transitions together
 - Animations
   - [x] iOS included easings
-  - [ ] Custom easings (may be impossible)
+  - [ ] ~~Custom easings~~ (may be impossible)
   - [x] Chained animations to be executed in sequence
   - [ ] Repeated animations
-- New `ui2.delay` interface
-  - Decorators for delay:
+- [x] New `ui2.delay` interface
+  - [x] Decorators for delay:
     ```python
     @ui2.delayed(1)
     def hi():
         print("Hello")
     ```
-  - Named delays which can be cancelled individually
+  - [x] Named delays which can be cancelled individually
+- [ ] Gestures
 
 # Misc
 - [ ] Create `.pyui` files from in-memory `ui.View` objects - Individual components can be created with their subviews, but not the top-level metadata.
