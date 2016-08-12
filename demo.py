@@ -227,6 +227,19 @@ def demo_Subclassing():
     ui2.delay(ss.close, 0.5)
 
 
+def demo_MapView():
+    a = ui2.MapView(frame=(0, 0, 500, 500))
+    a.present("sheet")
+
+    @ui2.delayed_by(0.5)
+    def move_a():
+        a.bounds = -30, -30, 30, 30
+    
+    @ui2.delayed_by(2)
+    def move_b():
+        a.center = 50, 50
+
+
 # DEMO RUNNER -----------------------------------------------------------------
 
 

@@ -21,3 +21,4 @@ from ui2.delay import *
 from ui2.view_classes.PathView import PathView
 from ui2.view_classes.ProgressPathView import ProgressPathView
 from ui2.view_classes.BlurView import BlurView
+from ui2.view_classes.MapView import MapView

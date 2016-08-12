@@ -15,8 +15,8 @@ A list of things I'd like to add, or things that are planned
   - It will have methods for showing and hiding, the menu, etc.
 - [ ] Pull to refresh
 - [x] `BlurView`
-- [ ] `MapView`
-- [ ] 
+- [x] `MapView`
+
 
 # New features for UIs
 - [x] Transitions
