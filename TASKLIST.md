@@ -36,7 +36,7 @@ A list of things I'd like to add, or things that are planned
     ```
   - [x] Named delays which can be cancelled individually
 - [ ] Gestures
-- [ ] Easy keyboard shortcuts
+- [x] Easy keyboard shortcuts
 
 # Misc
 - [ ] Create `.pyui` files from in-memory `ui.View` objects - Individual components can be created with their subviews, but not the top-level metadata.
