@@ -32,12 +32,30 @@ _special_keys = {
 
 # HELPER METHODS
 
+def _add_method(cls, func):
+    # void, object, selector
+    type_encoding = "v@:"
+    sel_name = str(uuid.uuid4())
+    sel = objc_util.sel(sel_name)
+    class_ptr = objc_util.object_getClass(cls.ptr)
+
+    # ----------------- Modified from objc_util.add_method ------------------ #
+    parsed_types = objc_util.parse_types(type_encoding)
+    restype, argtypes, _ = parsed_types
+    imp = ctypes.CFUNCTYPE(restype, *argtypes)(func)
+    objc_util.retain_global(imp)
+    if isinstance(type_encoding, str):
+       type_encoding = type_encoding.encode('ascii')
+    objc_util.class_addMethod(class_ptr, sel, imp, type_encoding)
+    # ----------------------------------------------------------------------- #
+    return sel
+
 
 def _tokenize_shortcut_string(shortcut):
     """Split a plaintext string representing a keyboard shortcut into each
     individual key in the shortcut.
     
-    Valid separator characters are any combination of " ", "+", and "-".
+    Valid separator characters are any combination of " ", "+", "-", and ",".
     """
     # Tokenize the string
     out = [shortcut]
@@ -79,7 +97,11 @@ def _validate_tokens(tokens):
             )
 
 
-# MAIN INTERFACE
+# TRACKING OF COMMANDS
+_registered_commands = {}
+
+
+# REGISTERING
 
 
 def _add_shortcut(shortcut, function, title=None):
@@ -103,21 +125,9 @@ def _add_shortcut(shortcut, function, title=None):
     if inp in _special_keys:
         inp = _special_keys[inp]
 
-    # void, object, selector
-    type_encoding = "v@:"
-    sel_name = str(uuid.uuid4())
-    sel = objc_util.sel(sel_name)
-    class_ptr = objc_util.object_getClass(_controller.ptr)
+    # Make the command
+    sel = _add_method(_controller, wrapper)
 
-    # ----------------- Modified from objc_util.add_method ------------------ #
-    parsed_types = objc_util.parse_types(type_encoding)
-    restype, argtypes, _ = parsed_types
-    imp = ctypes.CFUNCTYPE(restype, *argtypes)(wrapper)
-    objc_util.retain_global(imp)
-    if isinstance(type_encoding, str):
-        type_encoding = type_encoding.encode('ascii')
-    objc_util.class_addMethod(class_ptr, sel, imp, type_encoding)
-    # ----------------------------------------------------------------------- #
     kc = objc_util.ObjCClass("UIKeyCommand")
     if title is not None:
         c = kc.keyCommandWithInput_modifierFlags_action_discoverabilityTitle_(
@@ -132,8 +142,12 @@ def _add_shortcut(shortcut, function, title=None):
             mod_bitmask,
             sel
         )
-    
+
+    _registered_commands[frozenset(tokens)] = cp
     _controller.addKeyCommand_(c)
+
+
+# MAIN INTERFACE
 
 
 def bind(shortcut, title=None):
@@ -147,9 +161,10 @@ def bind(shortcut, title=None):
 
     The shortcut definition syntax is designed to be flexible, so the following
     shortcut names are all equivalent:
-        - Command + Shift + P
-        - cmd-shift-p
-        - CMD SHIFT P
+        - Command + Shift + Escape
+        - cmd-shift-esc
+        - CMD SHIFT ESCAPE
+        - command, shift, esc
 
     A few non-alphanumeric keys are supported with special names:
         - up
@@ -163,6 +178,6 @@ def bind(shortcut, title=None):
 
 if __name__ == "__main__":
     import console
-    @bind("command-shift-esc", "Say Hi")
+    @bind("Command Shift Escape", "Say Hi")
     def hi():
         console.alert("Hello")
